@@ -12,7 +12,7 @@
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: #060910;
-      color: #e2e8f0;
+      color: #f1f5f9;
     }
     .font-mono {
       font-family: 'JetBrains Mono', monospace;
@@ -25,44 +25,46 @@
       background: #0b1120;
     }
     ::-webkit-scrollbar-thumb {
-      background: #1e293b;
+      background: #334155;
       border-radius: 3px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #334155;
+      background: #475569;
     }
     @keyframes pulse-ring {
-      0% { transform: scale(0.9); opacity: 0.8; }
+      0% { transform: scale(0.9); opacity: 0.9; }
       50% { transform: scale(1.6); opacity: 0; }
-      100% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(0.9); opacity: 0.9; }
     }
     .pulse-ring-red {
       animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
     }
     .glow-cyan {
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
-    }
-    .glow-emerald {
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
     }
     .time-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background: #38bdf8;
       cursor: pointer;
-      box-shadow: 0 0 10px #38bdf8;
+      box-shadow: 0 0 12px #38bdf8;
+      border: 2px solid #ffffff;
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased">
+  <!-- Skip to Main Content (WCAG Accessibility) -->
+  <a href="#main-dashboard" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:p-2.5 focus:bg-sky-600 focus:text-white focus:rounded-lg focus:shadow-lg focus:outline-none">
+    Skip to main content
+  </a>
 
   <!-- TOP APP BAR -->
-  <header class="border-b border-slate-800 bg-[#090e1a]/95 backdrop-blur sticky top-0 z-50 px-4 lg:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-md">
+  <header role="banner" class="border-b border-slate-800 bg-[#090e1a]/95 backdrop-blur sticky top-0 z-40 px-4 lg:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-md">
     <div class="flex items-center space-x-3">
-      <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-sky-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-sky-500/20 text-white font-bold text-lg cursor-pointer" onclick="resetSimulation()">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-sky-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-sky-500/20 text-white font-bold text-lg" aria-hidden="true">
         ✈
       </div>
       <div>
@@ -72,7 +74,7 @@
             <span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20 font-bold">AOC DISPATCHER</span>
           </h1>
           <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1" aria-hidden="true"></span>
             100% Deterministic Engine
           </span>
         </div>
@@ -81,91 +83,91 @@
     </div>
 
     <!-- PRESET DISRUPTION BUTTONS -->
-    <div class="flex items-center flex-wrap gap-1.5">
-      <span class="text-[11px] font-medium uppercase tracking-wider text-slate-500 mr-1 hidden sm:inline">Disruption Scenarios:</span>
-      <button onclick="applyPreset('BOM_AFTERNOON')" class="text-xs font-mono px-2.5 py-1 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition flex items-center gap-1 shadow-sm" title="The Hackathon Prompt's Kolkata Cascade Story: BOM storm cascades to cancel Kolkata flight!">
+    <nav aria-label="Disruption Scenarios" class="flex items-center flex-wrap gap-1.5">
+      <span class="text-[11px] font-medium uppercase tracking-wider text-slate-400 mr-1 hidden sm:inline">Disruptions:</span>
+      <button onclick="applyPreset('BOM_AFTERNOON')" aria-label="Simulate Mumbai afternoon storm at 15:00" class="text-xs font-mono px-2.5 py-1 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition flex items-center gap-1 shadow-sm focus:ring-2 focus:ring-amber-400 focus:outline-none">
         ⚡ BOM Storm (15:00)
       </button>
-      <button onclick="applyPreset('BOM_MONSOON')" class="text-xs font-mono px-2.5 py-1 rounded bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 transition flex items-center gap-1 shadow-sm" title="16 flights delayed, 199 stranded passengers">
+      <button onclick="applyPreset('BOM_MONSOON')" aria-label="Simulate Mumbai monsoon flood at 07:30" class="text-xs font-mono px-2.5 py-1 rounded bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 transition flex items-center gap-1 shadow-sm focus:ring-2 focus:ring-rose-400 focus:outline-none">
         ⛈️ BOM Flood (07:30)
       </button>
-      <button onclick="applyPreset('DEL_FOG')" class="text-xs font-mono px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 transition flex items-center gap-1 shadow-sm">
+      <button onclick="applyPreset('DEL_FOG')" aria-label="Simulate Delhi winter fog at 08:00" class="text-xs font-mono px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 transition flex items-center gap-1 shadow-sm focus:ring-2 focus:ring-sky-400 focus:outline-none">
         🌫️ DEL Fog (08:00)
       </button>
-      <button onclick="applyPreset('CCU_CYCLONE')" class="text-xs font-mono px-2.5 py-1 rounded bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 transition flex items-center gap-1 shadow-sm" title="9 flights delayed, 2 crew violations!">
+      <button onclick="applyPreset('CCU_CYCLONE')" aria-label="Simulate Kolkata cyclone warning at 12:00" class="text-xs font-mono px-2.5 py-1 rounded bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 transition flex items-center gap-1 shadow-sm focus:ring-2 focus:ring-purple-400 focus:outline-none">
         🌀 CCU Alert (12:00)
       </button>
-      <button onclick="applyPreset('BLR_HALT')" class="text-xs font-mono px-2.5 py-1 rounded bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 transition flex items-center gap-1 shadow-sm">
+      <button onclick="applyPreset('BLR_HALT')" aria-label="Simulate Bengaluru airspace halt at 09:00" class="text-xs font-mono px-2.5 py-1 rounded bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 transition flex items-center gap-1 shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none">
         🛡️ BLR Halt (09:00)
       </button>
-      <button onclick="openBeforeAfterModal()" class="text-xs font-medium px-2.5 py-1 rounded bg-sky-950/80 hover:bg-sky-900 text-sky-300 border border-sky-600/50 transition flex items-center gap-1">
+      <button onclick="openBeforeAfterModal()" aria-label="Open before versus after recovery analysis modal" class="text-xs font-medium px-2.5 py-1 rounded bg-sky-950/80 hover:bg-sky-900 text-sky-300 border border-sky-600/50 transition flex items-center gap-1 focus:ring-2 focus:ring-sky-400 focus:outline-none">
         ⚖️ Before vs After
       </button>
-      <button onclick="resetSimulation()" class="text-xs font-medium px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+      <button onclick="resetSimulation()" aria-label="Reset simulation to normal baseline" class="text-xs font-medium px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition focus:ring-2 focus:ring-slate-400 focus:outline-none">
         ↺ Reset
       </button>
-      <button onclick="exportSITREP()" class="text-xs font-medium px-2.5 py-1 rounded bg-sky-900/40 hover:bg-sky-800/60 text-sky-300 border border-sky-700/50 transition">
+      <button onclick="exportSITREP()" aria-label="Export official SITREP operations report" class="text-xs font-medium px-2.5 py-1 rounded bg-sky-900/40 hover:bg-sky-800/60 text-sky-300 border border-sky-700/50 transition focus:ring-2 focus:ring-sky-400 focus:outline-none">
         📥 SITREP
       </button>
-    </div>
+    </nav>
   </header>
 
   <!-- TIME SCRUBBER: WATCH THE DELAY SPREAD IN REAL TIME -->
-  <section class="bg-[#0c1220] border-b border-slate-800 px-4 lg:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+  <section role="region" aria-label="Simulation Time Control" class="bg-[#0c1220] border-b border-slate-800 px-4 lg:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
     <div class="flex items-center gap-3">
       <div class="flex items-center gap-1 bg-[#131b2e] px-2 py-1 rounded-lg border border-slate-700">
-        <button id="play-pause-btn" onclick="togglePlayback()" class="w-7 h-7 rounded bg-sky-600 hover:bg-sky-500 text-white flex items-center justify-center font-bold text-xs transition">
+        <button id="play-pause-btn" onclick="togglePlayback()" aria-label="Play or pause simulation animation" class="w-7 h-7 rounded bg-sky-600 hover:bg-sky-500 text-white flex items-center justify-center font-bold text-xs transition focus:ring-2 focus:ring-sky-400 focus:outline-none">
           ▶
         </button>
-        <button onclick="stepTime(-15)" class="w-7 h-7 rounded hover:bg-slate-800 text-slate-300 flex items-center justify-center font-mono text-xs transition" title="Step -15m">
+        <button onclick="stepTime(-15)" aria-label="Rewind 15 minutes" class="w-7 h-7 rounded hover:bg-slate-800 text-slate-300 flex items-center justify-center font-mono text-xs transition focus:ring-2 focus:ring-sky-400 focus:outline-none" title="Step -15m">
           -15m
         </button>
-        <button onclick="stepTime(15)" class="w-7 h-7 rounded hover:bg-slate-800 text-slate-300 flex items-center justify-center font-mono text-xs transition" title="Step +15m">
+        <button onclick="stepTime(15)" aria-label="Advance 15 minutes" class="w-7 h-7 rounded hover:bg-slate-800 text-slate-300 flex items-center justify-center font-mono text-xs transition focus:ring-2 focus:ring-sky-400 focus:outline-none" title="Step +15m">
           +15m
         </button>
       </div>
 
       <div class="flex items-center gap-2">
-        <span class="text-xs text-slate-400 font-medium">SIMULATION TIME:</span>
-        <span id="current-clock-display" class="text-sm font-bold font-mono px-2.5 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-600/40">
+        <span class="text-xs text-slate-400 font-medium">CLOCK:</span>
+        <span id="current-clock-display" role="status" aria-live="polite" class="text-sm font-bold font-mono px-2.5 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-600/40">
           12:00 IST
         </span>
       </div>
 
       <div class="flex items-center gap-2 text-xs font-mono text-slate-400 border-l border-slate-800 pl-3">
         <span>Airborne Flights:</span>
-        <span id="airborne-count-badge" class="font-bold text-white bg-slate-800 px-2 py-0.5 rounded">0 in air</span>
+        <span id="airborne-count-badge" role="status" class="font-bold text-white bg-slate-800 px-2 py-0.5 rounded">0 in air</span>
       </div>
     </div>
 
-    <!-- Time Slider -->
+    <!-- Time Slider with full ARIA attributes -->
     <div class="flex-1 max-w-xl mx-4 flex items-center gap-3">
-      <span class="text-[10px] font-mono text-slate-500">05:00</span>
-      <input id="time-scrubber" type="range" min="300" max="1380" step="5" value="720" oninput="handleTimeScrub(this.value)" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer time-slider" />
-      <span class="text-[10px] font-mono text-slate-500">23:00</span>
+      <span class="text-[10px] font-mono text-slate-400" aria-hidden="true">05:00</span>
+      <input id="time-scrubber" type="range" min="300" max="1380" step="5" value="720" role="slider" aria-label="Timeline scrubber from 05:00 to 23:00 IST" aria-valuemin="300" aria-valuemax="1380" aria-valuenow="720" aria-valuetext="12:00 IST" oninput="handleTimeScrub(this.value)" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer time-slider focus:ring-2 focus:ring-sky-400 focus:outline-none" />
+      <span class="text-[10px] font-mono text-slate-400" aria-hidden="true">23:00</span>
     </div>
 
     <!-- Speed Selector -->
     <div class="flex items-center gap-1.5 text-xs font-mono text-slate-400">
       <span>Speed:</span>
-      <button onclick="setPlaySpeed(1)" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200">1x</button>
-      <button onclick="setPlaySpeed(2)" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200">2x</button>
-      <button onclick="setPlaySpeed(5)" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200">5x</button>
+      <button onclick="setPlaySpeed(1)" aria-label="Set playback speed to 1x" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 focus:ring-1 focus:ring-sky-400">1x</button>
+      <button onclick="setPlaySpeed(2)" aria-label="Set playback speed to 2x" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 focus:ring-1 focus:ring-sky-400">2x</button>
+      <button onclick="setPlaySpeed(5)" aria-label="Set playback speed to 5x" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 focus:ring-1 focus:ring-sky-400">5x</button>
     </div>
   </section>
 
   <!-- MAIN DASHBOARD CONTENT -->
-  <main class="flex-1 max-w-[1700px] w-full mx-auto p-3 lg:p-5 flex flex-col gap-4">
+  <main id="main-dashboard" role="main" class="flex-1 max-w-[1700px] w-full mx-auto p-3 lg:p-5 flex flex-col gap-4">
 
     <!-- KPI STATS SUMMARY CARDS -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+    <section aria-label="Network Key Performance Indicators" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       <div class="bg-[#0c1220] border border-slate-800/80 rounded-xl p-3 flex flex-col justify-between shadow">
         <span class="text-xs text-slate-400 font-medium">Scheduled Flights</span>
         <div class="flex items-baseline justify-between mt-1">
           <span id="kpi-total-flights" class="text-2xl font-bold font-mono text-white">70</span>
           <span class="text-[11px] text-emerald-400 font-mono" id="kpi-ontime-flights">70 on-time</span>
         </div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden" aria-hidden="true">
           <div id="kpi-ontime-bar" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 100%"></div>
         </div>
       </div>
@@ -214,7 +216,7 @@
         </div>
         <span class="text-[11px] text-slate-400 mt-1">Pax comp & delay penalties</span>
       </div>
-    </div>
+    </section>
 
     <!-- WORKSPACE SPLIT: LEFT CONTROLS & MAP | RIGHT AI DISPATCHER & GANTT -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
@@ -223,21 +225,21 @@
       <div class="lg:col-span-7 flex flex-col gap-4">
         
         <!-- DISRUPTION CONFIGURATION BAR -->
-        <div class="bg-[#0c1220] border border-slate-800 rounded-xl p-4 flex flex-col gap-3 shadow">
+        <section aria-labelledby="disruption-heading" class="bg-[#0c1220] border border-slate-800 rounded-xl p-4 flex flex-col gap-3 shadow">
           <div class="flex items-center justify-between">
-            <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+            <h2 id="disruption-heading" class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-500" aria-hidden="true"></span>
               Airport Disruption & Ground Delay Program (GDP) Trigger
             </h2>
-            <span id="active-disruption-badge" class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">
+            <span id="active-disruption-badge" role="status" class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">
               Network Normal
             </span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
             <div>
-              <label class="block text-xs font-medium text-slate-400 mb-1">Target Airport</label>
-              <select id="input-airport" class="w-full bg-[#131b2e] border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-slate-200 focus:outline-none focus:border-sky-500">
+              <label for="input-airport" class="block text-xs font-medium text-slate-300 mb-1">Target Airport</label>
+              <select id="input-airport" class="w-full bg-[#131b2e] border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500">
                 <option value="BOM">BOM - Mumbai (CSMIA)</option>
                 <option value="DEL">DEL - Delhi (IGIA)</option>
                 <option value="BLR">BLR - Bengaluru (KIA)</option>
@@ -258,76 +260,76 @@
             </div>
 
             <div>
-              <label class="block text-xs font-medium text-slate-400 mb-1">Closure Start (IST)</label>
-              <input id="input-start-time" type="time" value="15:00" class="w-full bg-[#131b2e] border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-slate-200 focus:outline-none focus:border-sky-500" />
+              <label for="input-start-time" class="block text-xs font-medium text-slate-300 mb-1">Closure Start (IST)</label>
+              <input id="input-start-time" type="time" value="15:00" class="w-full bg-[#131b2e] border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500" />
             </div>
 
             <div>
-              <label class="block text-xs font-medium text-slate-400 mb-1">Closure End (IST)</label>
-              <input id="input-end-time" type="time" value="16:30" class="w-full bg-[#131b2e] border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-slate-200 focus:outline-none focus:border-sky-500" />
+              <label for="input-end-time" class="block text-xs font-medium text-slate-300 mb-1">Closure End (IST)</label>
+              <input id="input-end-time" type="time" value="16:30" class="w-full bg-[#131b2e] border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500" />
             </div>
 
-            <button onclick="handleTriggerDisruption()" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-medium text-sm px-4 py-2 rounded-lg transition shadow-lg shadow-rose-600/20 flex items-center justify-center gap-1.5">
+            <button onclick="handleTriggerDisruption()" aria-label="Simulate disruption cascade across airline network" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-medium text-sm px-4 py-2 rounded-lg transition shadow-lg shadow-rose-600/20 flex items-center justify-center gap-1.5 focus:ring-2 focus:ring-rose-400 focus:outline-none">
               <span>⚠️ Simulate Cascade</span>
             </button>
           </div>
-        </div>
+        </section>
 
         <!-- INTERACTIVE INDIA FLIGHT MAP -->
-        <div class="bg-[#0c1220] border border-slate-800 rounded-xl p-4 flex flex-col relative overflow-hidden shadow">
+        <section aria-labelledby="map-heading" class="bg-[#0c1220] border border-slate-800 rounded-xl p-4 flex flex-col relative overflow-hidden shadow">
           <div class="flex items-center justify-between mb-2 z-10">
-            <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <h3 id="map-heading" class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
               <span>🇮🇳 Indian Airspace Live Telemetry</span>
             </h3>
-            <div class="flex items-center gap-3 text-[11px] font-mono text-slate-400">
-              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-400"></span> Normal</span>
-              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Delayed</span>
-              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Closed / GDP</span>
-              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-cyan-400"></span> Spare Hub</span>
+            <div class="flex items-center gap-3 text-[11px] font-mono text-slate-300">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-400" aria-hidden="true"></span> Normal</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400" aria-hidden="true"></span> Delayed</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-500" aria-hidden="true"></span> Closed / GDP</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-cyan-400" aria-hidden="true"></span> Spare Hub</span>
             </div>
           </div>
 
-          <div class="w-full h-[520px] bg-[#070b14] rounded-lg border border-slate-800/60 relative flex items-center justify-center">
-            <svg id="network-map" class="w-full h-full" viewBox="0 0 900 950" preserveAspectRatio="xMidYMid meet">
+          <div class="w-full h-[520px] bg-[#070b14] rounded-lg border border-slate-800/80 relative flex items-center justify-center overflow-hidden">
+            <svg id="network-map" role="img" aria-label="Interactive Indian Airspace map showing 16 airports and active flight routes" class="w-full h-full" viewBox="0 0 900 950" preserveAspectRatio="xMidYMid meet">
               <defs>
                 <radialGradient id="hub-glow-normal" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>
+                  <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.9"/>
                   <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
                 </radialGradient>
                 <radialGradient id="hub-glow-closed" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.9"/>
+                  <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.95"/>
                   <stop offset="100%" stop-color="#f43f5e" stop-opacity="0"/>
                 </radialGradient>
                 <radialGradient id="hub-glow-spare" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.8"/>
+                  <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.9"/>
                   <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
                 </radialGradient>
               </defs>
 
-              <g id="map-grid" opacity="0.15"></g>
-              <!-- India Coastline / Border Silhouette -->
-              <path id="india-boundary" d="M 261.4 101.2 L 253.0 54.4 L 309.3 38.8 L 351.5 54.4 L 374.0 101.2 L 379.6 147.9 L 421.9 179.0 L 464.1 225.8 L 534.4 256.9 L 633.0 272.5 L 655.5 256.9 L 731.5 241.3 L 815.9 225.8 L 858.1 241.3 L 872.2 288.1 L 830.0 319.2 L 787.8 366.0 L 759.6 381.5 L 745.6 428.3 L 661.1 443.8 L 633.0 428.3 L 590.7 475.0 L 548.5 521.7 L 506.3 568.5 L 421.9 630.8 L 416.2 708.7 L 402.1 771.0 L 379.6 817.7 L 337.4 858.2 L 317.7 848.8 L 295.2 802.1 L 267.0 724.2 L 233.3 646.3 L 216.4 584.0 L 205.1 521.7 L 202.3 475.0 L 182.6 459.4 L 126.3 475.0 L 112.2 443.8 L 98.1 412.7 L 84.1 381.5 L 92.5 350.4 L 154.4 350.4 L 140.4 288.1 L 154.4 241.3 L 196.7 194.6 L 253.0 132.3 Z" fill="#0d1424" fill-opacity="0.4" stroke="#1e2c48" stroke-width="1.5" />
+              <g id="map-grid" opacity="0.2"></g>
+              <!-- Visible India Landmass Silhouette -->
+              <path id="india-boundary" d="M 261 101 L 253 54 L 309 39 L 352 54 L 374 101 L 380 148 L 422 179 L 464 226 L 534 257 L 633 273 L 656 257 L 732 241 L 816 226 L 858 241 L 872 273 L 830 304 L 788 335 L 750 350 L 730 380 L 670 420 L 630 450 L 580 490 L 530 540 L 480 600 L 440 670 L 400 740 L 370 800 L 340 850 L 320 865 L 300 840 L 290 800 L 270 750 L 240 680 L 210 600 L 190 530 L 180 470 L 160 420 L 140 380 L 110 360 L 90 340 L 80 300 L 110 270 L 140 250 L 160 210 L 190 170 L 230 130 Z" fill="#0f172a" fill-opacity="0.75" stroke="#253554" stroke-width="2" />
               <g id="routes-layer"></g>
               <g id="particles-layer"></g>
               <g id="airports-layer"></g>
             </svg>
 
-            <div id="map-tooltip" class="absolute pointer-events-none hidden bg-[#0f172a]/95 border border-slate-700 text-xs text-slate-200 p-2.5 rounded-lg shadow-xl z-30 font-mono min-w-[180px]"></div>
+            <div id="map-tooltip" role="tooltip" class="absolute pointer-events-none hidden bg-[#0f172a]/95 border border-slate-700 text-xs text-slate-200 p-2.5 rounded-lg shadow-xl z-30 font-mono min-w-[180px]"></div>
           </div>
-        </div>
+        </section>
       </div>
 
       <!-- RIGHT COLUMN: AI DISPATCHER & TACTICAL RECOVERY (5 cols) -->
       <div class="lg:col-span-5 flex flex-col gap-4">
         
         <!-- AI DISPATCHER CONSOLE -->
-        <div class="bg-[#0c1220] border border-slate-800 rounded-xl p-4 flex flex-col gap-3 shadow">
+        <section aria-labelledby="ai-dispatcher-heading" class="bg-[#0c1220] border border-slate-800 rounded-xl p-4 flex flex-col gap-3 shadow">
           <div class="flex items-center justify-between border-b border-slate-800 pb-3">
             <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-md bg-sky-500/10 text-sky-400 flex items-center justify-center font-bold text-xs border border-sky-500/20">
+              <div class="w-6 h-6 rounded-md bg-sky-500/10 text-sky-400 flex items-center justify-center font-bold text-xs border border-sky-500/20" aria-hidden="true">
                 AI
               </div>
-              <h2 class="text-sm font-semibold text-slate-200">
+              <h2 id="ai-dispatcher-heading" class="text-sm font-semibold text-slate-200">
                 AI Flight Operations Dispatcher
               </h2>
             </div>
@@ -336,37 +338,37 @@
             </span>
           </div>
 
-          <div id="ai-briefing-box" class="bg-[#070b14] border border-slate-800/80 rounded-lg p-3 text-xs text-slate-300 leading-relaxed font-sans max-h-48 overflow-y-auto space-y-2">
+          <div id="ai-briefing-box" role="status" aria-live="polite" class="bg-[#070b14] border border-slate-800/80 rounded-lg p-3 text-xs text-slate-200 leading-relaxed font-sans max-h-48 overflow-y-auto space-y-2">
             <p class="text-slate-400 italic">Select an airport closure scenario above to simulate the cascade and unlock AI recovery actions.</p>
           </div>
 
           <!-- INTERACTIVE AI COPILOT QUERY INPUT -->
           <div class="bg-[#070a13] border border-slate-800 rounded-lg p-2.5 flex flex-col gap-2">
-            <div class="flex items-center justify-between text-[11px] font-medium text-slate-400">
+            <div class="flex items-center justify-between text-[11px] font-medium text-slate-300">
               <span>Ask AI Dispatcher:</span>
-              <span class="text-[10px] text-sky-400">Grounded Copilot</span>
+              <span class="text-[10px] text-sky-400 font-mono">Grounded Copilot</span>
             </div>
             <div class="flex flex-wrap gap-1">
-              <button onclick="askCopilot('Why did crew CR03 exceed duty?')" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 transition">
+              <button onclick="askCopilot('Why did crew CR03 exceed duty?')" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 transition focus:ring-1 focus:ring-sky-400">
                 CR03 Timeout?
               </button>
-              <button onclick="askCopilot('Explain the Kolkata cascade')" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 transition">
+              <button onclick="askCopilot('Explain the Kolkata cascade')" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 transition focus:ring-1 focus:ring-sky-400">
                 Kolkata Cascade?
               </button>
-              <button onclick="askCopilot('Which connection has the highest stranded passengers?')" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 transition">
+              <button onclick="askCopilot('Which connection has the highest stranded passengers?')" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 transition focus:ring-1 focus:ring-sky-400">
                 Top Stranded CX?
               </button>
-              <button onclick="askCopilot('Compare spare swap vs flight cancellation')" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 transition">
+              <button onclick="askCopilot('Compare spare swap vs flight cancellation')" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 transition focus:ring-1 focus:ring-sky-400">
                 Swap vs Cancel?
               </button>
             </div>
             <div class="flex gap-1.5 mt-1">
-              <input id="copilot-input" placeholder="Type custom operational question..." onkeydown="if(event.key==='Enter') sendCustomCopilotQuery()" class="flex-1 bg-[#101726] border border-slate-700 rounded px-2.5 py-1 text-xs font-mono text-slate-200 focus:outline-none focus:border-sky-500" />
-              <button onclick="sendCustomCopilotQuery()" class="px-3 py-1 bg-sky-600 hover:bg-sky-500 text-white rounded text-xs font-medium transition">
+              <input id="copilot-input" aria-label="Type question for AI Dispatcher" placeholder="Type custom operational question..." onkeydown="if(event.key==='Enter') sendCustomCopilotQuery()" class="flex-1 bg-[#101726] border border-slate-700 rounded px-2.5 py-1 text-xs font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500" />
+              <button onclick="sendCustomCopilotQuery()" aria-label="Submit question to AI Dispatcher" class="px-3 py-1 bg-sky-600 hover:bg-sky-500 text-white rounded text-xs font-medium transition focus:ring-2 focus:ring-sky-400">
                 Ask
               </button>
             </div>
-            <div id="copilot-answer-box" class="hidden p-2 rounded bg-slate-900 border border-slate-700 text-[11px] text-slate-200 leading-relaxed font-sans max-h-32 overflow-y-auto"></div>
+            <div id="copilot-answer-box" role="status" aria-live="polite" class="hidden p-2 rounded bg-slate-900 border border-slate-700 text-[11px] text-slate-200 leading-relaxed font-sans max-h-32 overflow-y-auto"></div>
           </div>
 
           <!-- RECOVERY ACTIONS CONTAINER -->
@@ -375,28 +377,28 @@
               <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400">
                 Recommended Recovery Actions
               </h3>
-              <span id="recovery-options-count" class="text-[11px] font-mono text-slate-500">0 options</span>
+              <span id="recovery-options-count" class="text-[11px] font-mono text-slate-400">0 options</span>
             </div>
 
             <div id="recovery-cards-container" class="flex flex-col gap-2.5 max-h-[340px] overflow-y-auto pr-1">
-              <div class="p-4 border border-dashed border-slate-800 rounded-lg text-center text-xs text-slate-500">
+              <div class="p-4 border border-dashed border-slate-800 rounded-lg text-center text-xs text-slate-400">
                 No active disruption. All flights operating smoothly.
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
         <!-- RECOVERY COMPARISON / DIFF BANNER -->
         <div id="recovery-diff-banner" class="hidden bg-gradient-to-r from-emerald-950/40 via-sky-950/30 to-indigo-950/40 border border-emerald-500/30 rounded-xl p-4 flex flex-col gap-2 shadow">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 uppercase tracking-wider">
-              <span>✓</span> Recovery Plan Applied
+              <span aria-hidden="true">✓</span> Recovery Plan Applied
             </span>
             <div class="flex items-center gap-2">
-              <button onclick="openBeforeAfterModal()" class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition">
+              <button onclick="openBeforeAfterModal()" class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition focus:ring-1 focus:ring-emerald-400">
                 View Full Diff
               </button>
-              <button onclick="revertRecovery()" class="text-[11px] font-mono text-slate-400 hover:text-white underline">
+              <button onclick="revertRecovery()" class="text-[11px] font-mono text-slate-400 hover:text-white underline focus:outline-none">
                 Revert
               </button>
             </div>
@@ -425,21 +427,21 @@
     </div>
 
     <!-- AIRCRAFT ROTATION GANTT CHART (FULL WIDTH) -->
-    <div class="bg-[#0c1220] border border-slate-800 rounded-xl p-4 flex flex-col gap-3 shadow">
+    <section aria-labelledby="gantt-heading" class="bg-[#0c1220] border border-slate-800 rounded-xl p-4 flex flex-col gap-3 shadow">
       <div class="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h2 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-            <span>📊</span>
+          <h2 id="gantt-heading" class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+            <span aria-hidden="true">📊</span>
             Aircraft Rotation Gantt Timeline (16 Tails + 2 Spares)
           </h2>
           <p class="text-xs text-slate-400">Visualizing 30-minute turnaround propagation and delay absorption across 24 hours.</p>
         </div>
-        <div class="flex items-center gap-3 text-[11px] font-mono text-slate-400">
-          <span class="flex items-center gap-1"><span class="w-3 h-2 rounded bg-emerald-500"></span> On Time</span>
-          <span class="flex items-center gap-1"><span class="w-3 h-2 rounded bg-amber-500"></span> Delayed (&lt;60m)</span>
-          <span class="flex items-center gap-1"><span class="w-3 h-2 rounded bg-rose-500"></span> Severe Delay (&gt;60m)</span>
-          <span class="flex items-center gap-1"><span class="w-3 h-2 rounded bg-cyan-400"></span> Spare Substituted</span>
-          <span class="flex items-center gap-1"><span class="w-3 h-2 rounded bg-slate-600"></span> Cancelled</span>
+        <div class="flex items-center gap-3 text-[11px] font-mono text-slate-300">
+          <span class="flex items-center gap-1"><span class="w-3 h-2 rounded bg-emerald-500" aria-hidden="true"></span> On Time</span>
+          <span class="flex items-center gap-1"><span class="w-3 h-2 rounded bg-amber-500" aria-hidden="true"></span> Delayed (&lt;60m)</span>
+          <span class="flex items-center gap-1"><span class="w-3 h-2 rounded bg-rose-500" aria-hidden="true"></span> Severe Delay (&gt;60m)</span>
+          <span class="flex items-center gap-1"><span class="w-3 h-2 rounded bg-cyan-400" aria-hidden="true"></span> Spare Substituted</span>
+          <span class="flex items-center gap-1"><span class="w-3 h-2 rounded bg-slate-600" aria-hidden="true"></span> Cancelled</span>
         </div>
       </div>
 
@@ -458,28 +460,30 @@
         <div id="gantt-rows" class="min-w-[1100px] flex flex-col gap-1.5 py-1 relative"></div>
 
         <!-- Vertical Current Time Line on Gantt -->
-        <div id="gantt-time-cursor" class="absolute top-0 bottom-0 w-[2px] bg-sky-400 pointer-events-none z-20 shadow-[0_0_8px_#38bdf8]" style="left: 110px;"></div>
+        <div id="gantt-time-cursor" aria-hidden="true" class="absolute top-0 bottom-0 w-[2px] bg-sky-400 pointer-events-none z-20 shadow-[0_0_8px_#38bdf8]" style="left: 110px;"></div>
       </div>
-    </div>
+    </section>
 
     <!-- TABS: FLIGHT ROSTER | PASSENGER CONNECTIONS | CREW STATUS -->
-    <div class="bg-[#0c1220] border border-slate-800 rounded-xl p-4 flex flex-col gap-3 shadow">
+    <section aria-label="Operations Data Tables" class="bg-[#0c1220] border border-slate-800 rounded-xl p-4 flex flex-col gap-3 shadow">
       <div class="flex flex-wrap items-center justify-between border-b border-slate-800 pb-2.5 gap-2">
-        <div class="flex items-center gap-2">
-          <button id="tab-btn-flights" onclick="switchTab('flights')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 transition">
+        <div role="tablist" class="flex items-center gap-2">
+          <button id="tab-btn-flights" role="tab" aria-selected="true" onclick="switchTab('flights')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 transition focus:ring-2 focus:ring-sky-400">
             ✈ Flight Roster (70)
           </button>
-          <button id="tab-btn-connections" onclick="switchTab('connections')" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">
+          <button id="tab-btn-connections" role="tab" aria-selected="false" onclick="switchTab('connections')" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition focus:ring-2 focus:ring-sky-400">
             🧳 Connections & Stranded Pax (21)
           </button>
-          <button id="tab-btn-crews" onclick="switchTab('crews')" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">
+          <button id="tab-btn-crews" role="tab" aria-selected="false" onclick="switchTab('crews')" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition focus:ring-2 focus:ring-sky-400">
             👨‍✈️ Crew Duty Hours (16)
           </button>
         </div>
 
         <div class="flex items-center gap-2">
-          <input id="table-search" oninput="renderActiveTab()" placeholder="Filter flights, tails, cities..." class="bg-[#131b2e] border border-slate-700 rounded-lg px-2.5 py-1 text-xs font-mono text-slate-200 focus:outline-none focus:border-sky-500 w-48" />
-          <select id="status-filter" onchange="renderActiveTab()" class="bg-[#131b2e] border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-slate-200 focus:outline-none">
+          <label for="table-search" class="sr-only">Filter table entries</label>
+          <input id="table-search" oninput="renderActiveTab()" placeholder="Filter flights, tails, cities..." class="bg-[#131b2e] border border-slate-700 rounded-lg px-2.5 py-1 text-xs font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 w-48" />
+          <label for="status-filter" class="sr-only">Filter by flight status</label>
+          <select id="status-filter" onchange="renderActiveTab()" class="bg-[#131b2e] border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500">
             <option value="ALL">All Status</option>
             <option value="DELAYED">Delayed Only</option>
             <option value="ON_TIME">On Time Only</option>
@@ -489,27 +493,27 @@
       </div>
 
       <div class="overflow-x-auto max-h-96 overflow-y-auto">
-        <table class="w-full text-left text-xs font-mono">
-          <thead id="table-head" class="text-slate-400 bg-slate-900/60 sticky top-0 border-b border-slate-800"></thead>
+        <table role="table" aria-label="Operational table details" class="w-full text-left text-xs font-mono">
+          <thead id="table-head" class="text-slate-300 bg-slate-900/80 sticky top-0 border-b border-slate-800"></thead>
           <tbody id="table-body" class="divide-y divide-slate-800/60"></tbody>
         </table>
       </div>
-    </div>
+    </section>
 
   </main>
 
-  <!-- BEFORE VS AFTER RECOVERY COMPARISON MODAL -->
-  <div id="before-after-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+  <!-- BEFORE VS AFTER RECOVERY COMPARISON MODAL (WCAG Dialog) -->
+  <div id="before-after-modal" role="dialog" aria-modal="true" aria-labelledby="before-after-modal-title" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-[#0f172a] border border-slate-700 rounded-2xl max-w-5xl w-full p-6 flex flex-col gap-4 shadow-2xl max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
-          <span class="text-xl">⚖️</span>
+          <span class="text-xl" aria-hidden="true">⚖️</span>
           <div>
-            <h3 class="text-base font-bold text-white">Before vs After Recovery Analysis</h3>
+            <h3 id="before-after-modal-title" class="text-base font-bold text-white">Before vs After Recovery Analysis</h3>
             <p class="text-xs text-slate-400">Direct side-by-side comparison of cascade disruption vs tactical AI dispatch intervention.</p>
           </div>
         </div>
-        <button onclick="closeBeforeAfterModal()" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+        <button onclick="closeBeforeAfterModal()" aria-label="Close before versus after modal" class="text-slate-400 hover:text-white text-lg font-bold p-1 rounded focus:ring-2 focus:ring-sky-400">✕</button>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -587,7 +591,7 @@
             <span class="text-slate-400 block text-[10px]">Est. Savings</span>
             <span id="modal-delta-cost" class="text-base font-bold text-emerald-400">₹0</span>
           </div>
-          <button onclick="closeBeforeAfterModal()" class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs transition">
+          <button onclick="closeBeforeAfterModal()" class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs transition focus:ring-2 focus:ring-sky-400">
             Close View
           </button>
         </div>
@@ -595,21 +599,21 @@
     </div>
   </div>
 
-  <!-- CASCADE ROOT CAUSE MODAL -->
-  <div id="cascade-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <!-- CASCADE ROOT CAUSE MODAL (WCAG Dialog) -->
+  <div id="cascade-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-[#0f172a] border border-slate-700 rounded-2xl max-w-2xl w-full p-6 flex flex-col gap-4 shadow-2xl">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
-          <span class="text-lg">🔍</span>
+          <span class="text-lg" aria-hidden="true">🔍</span>
           <h3 id="modal-title" class="text-base font-bold text-white">Flight Cascade Lineage</h3>
         </div>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+        <button onclick="closeModal()" aria-label="Close flight lineage modal" class="text-slate-400 hover:text-white text-lg font-bold p-1 rounded focus:ring-2 focus:ring-sky-400">✕</button>
       </div>
 
       <div id="modal-content" class="flex flex-col gap-3 text-xs text-slate-300"></div>
 
       <div class="flex justify-end pt-2 border-t border-slate-800">
-        <button onclick="closeModal()" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium">Close</button>
+        <button onclick="closeModal()" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium focus:ring-2 focus:ring-sky-400">Close</button>
       </div>
     </div>
   </div>
@@ -632,11 +636,12 @@
     let isPlaying = false;
     let playTimer = null;
     let playSpeed = 1;
+    let isTicking = false;
 
     function timeToMin(t) {
       if (!t) return 0;
-      const [h, m] = t.split(':').map(Number);
-      return h * 60 + m;
+      const parts = t.split(':');
+      return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
     }
 
     function minToTime(m) {
@@ -681,14 +686,12 @@
           const dest = f.destination;
           const legOrder = f.leg_order;
 
-          // Check Spare Aircraft Substitution
           if (swaps[fid]) {
             activeTail = swaps[fid];
             prevArrTime = null;
             currentLocation = origin;
           }
 
-          // Cancellation check
           if (cancellations.has(fid)) {
             const fRes = {
               flight_id: fid,
@@ -713,7 +716,6 @@
             return;
           }
 
-          // Aircraft location / fleet balance check
           if (currentLocation !== null && currentLocation !== origin) {
             const fRes = {
               flight_id: fid,
@@ -754,7 +756,6 @@
 
           let depTime = readyDep;
 
-          // Closure at Origin
           if (closedApt && origin === closedApt && cStart !== null && cEnd !== null) {
             if ((depTime >= cStart && depTime < cEnd) || (depTime < cStart && schedDep >= cStart)) {
               reasons.push(`Origin ${origin} closed ${cStartStr}-${cEndStr} (held on ground)`);
@@ -763,7 +764,6 @@
             }
           }
 
-          // Closure at Destination (Ground Delay Program)
           if (closedApt && dest === closedApt && cStart !== null && cEnd !== null) {
             const estArr = depTime + block;
             if (estArr >= cStart && estArr < cEnd) {
@@ -806,7 +806,6 @@
         });
       });
 
-      // Connections
       const evaluatedConnections = [];
       let strandedPassengers = 0;
       let brokenConnectionsCount = 0;
@@ -858,7 +857,6 @@
         });
       });
 
-      // Crews
       const evaluatedCrews = [];
       let crewViolationsCount = 0;
 
@@ -947,7 +945,7 @@
       };
     }
 
-    // RECOVERY EVALUATOR WITH ROUND-TRIP OUT-AND-BACK PAIRS
+    // RECOVERY EVALUATOR
     function evaluateRecoveryEngine(closedApt, cStart, cEnd) {
       const baseline = simulateEngine(closedApt, cStart, cEnd);
       const bK = baseline.kpis;
@@ -1002,7 +1000,6 @@
       }
 
       // 3. Out-and-Back Round-Trip Cancellation Pairs
-      // Group flights by tail to find spoke pairs
       const flightsByTail = {};
       EMBEDDED_DATA.flights.forEach(f => {
         if (!flightsByTail[f.tail_id]) flightsByTail[f.tail_id] = [];
@@ -1106,13 +1103,11 @@
       };
     }
 
-    // AI COPILOT GROUNDED QUERY SYSTEM
     function askCopilot(query) {
       const box = document.getElementById('copilot-answer-box');
       box.classList.remove('hidden');
 
       const k = currentSimulation.kpis;
-      const delayed = Object.values(currentSimulation.flights).filter(f => f.dep_delay > 0).sort((a,b)=>b.dep_delay-a.dep_delay);
       const brokenCx = currentSimulation.connections.filter(c => c.status === 'BROKEN');
       const crewViols = currentSimulation.crews.filter(c => c.status === 'DUTY_EXCEEDED');
 
@@ -1152,7 +1147,6 @@
       }
     }
 
-    // BEFORE VS AFTER MODAL
     function openBeforeAfterModal() {
       if (!disruptedSimulation) {
         disruptedSimulation = currentSimulation;
@@ -1201,11 +1195,17 @@
       document.getElementById('before-after-modal').classList.add('hidden');
     }
 
-    // PLAYBACK & TIMELINE SCRUBBER
+    // High performance throttled time scrubbing using requestAnimationFrame
     function handleTimeScrub(val) {
       simClockMinute = parseInt(val, 10);
-      updateClockDisplay();
-      updateMapAndGanttAtTime();
+      if (!isTicking) {
+        isTicking = true;
+        requestAnimationFrame(() => {
+          updateClockDisplay();
+          updateMapAndGanttAtTime();
+          isTicking = false;
+        });
+      }
     }
 
     function stepTime(delta) {
@@ -1218,13 +1218,13 @@
     function updateClockDisplay() {
       const timeStr = minToTime(simClockMinute);
       document.getElementById('current-clock-display').textContent = `${timeStr} IST`;
+      document.getElementById('time-scrubber').setAttribute('aria-valuenow', simClockMinute);
+      document.getElementById('time-scrubber').setAttribute('aria-valuetext', `${timeStr} IST`);
       
-      // Update cursor position on Gantt
-      // Timeline goes from 300 (05:00) to 1380 (23:00) = 1080 min span
       const cursor = document.getElementById('gantt-time-cursor');
       if (cursor) {
-        const leftOffset = 96; // 24rem width of header
-        const timelineWidth = 1004; // approximate available width
+        const leftOffset = 96;
+        const timelineWidth = 1004;
         const pct = Math.max(0, Math.min(1, (simClockMinute - 300) / 1080));
         cursor.style.left = `${leftOffset + pct * timelineWidth}px`;
       }
@@ -1236,9 +1236,11 @@
         clearInterval(playTimer);
         isPlaying = false;
         btn.textContent = '▶';
+        btn.setAttribute('aria-label', 'Play simulation animation');
       } else {
         isPlaying = true;
         btn.textContent = '⏸';
+        btn.setAttribute('aria-label', 'Pause simulation animation');
         playTimer = setInterval(() => {
           if (simClockMinute >= 1380) {
             simClockMinute = 300;
@@ -1262,7 +1264,6 @@
 
     function updateMapAndGanttAtTime() {
       if (!currentSimulation) return;
-      // Count airborne flights at simClockMinute
       const airborne = Object.values(currentSimulation.flights).filter(f => {
         if (f.is_cancelled) return false;
         const dep = timeToMin(f.actual_dep);
@@ -1439,9 +1440,9 @@
           );
           const hasSevere = flightsOnRoute.some(fl => fl.dep_delay >= 60);
           const hasDelay = flightsOnRoute.some(fl => fl.dep_delay > 0);
-          const strokeColor = hasSevere ? '#f43f5e' : (hasDelay ? '#f59e0b' : '#1e3a5f');
-          const strokeWidth = hasSevere || hasDelay ? 2.5 : 1.2;
-          const strokeOpacity = hasSevere || hasDelay ? 0.85 : 0.35;
+          const strokeColor = hasSevere ? '#f43f5e' : (hasDelay ? '#f59e0b' : '#38bdf8');
+          const strokeWidth = hasSevere || hasDelay ? 2.5 : 1.3;
+          const strokeOpacity = hasSevere || hasDelay ? 0.9 : 0.45;
 
           const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
           pathEl.setAttribute('d', pathD);
@@ -1451,7 +1452,7 @@
           pathEl.setAttribute('stroke-opacity', strokeOpacity);
           routesLayer.appendChild(pathEl);
 
-          if (hasDelay || hasSevere || Math.random() < 0.35) {
+          if (hasDelay || hasSevere || Math.random() < 0.4) {
             const particle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             particle.setAttribute('r', '2.5');
             particle.setAttribute('fill', hasSevere ? '#fb7185' : (hasDelay ? '#fbbf24' : '#38bdf8'));
@@ -1475,8 +1476,12 @@
         const delayedCount = aptFlights.filter(f => f.dep_delay > 0).length;
 
         const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        g.setAttribute('class', 'cursor-pointer');
+        g.setAttribute('class', 'cursor-pointer focus:outline-none');
+        g.setAttribute('tabindex', '0');
+        g.setAttribute('role', 'button');
+        g.setAttribute('aria-label', `Airport ${apt.id} in ${apt.city}. ${delayedCount} delayed flights.`);
         g.onclick = () => selectAirportFromMap(apt.id);
+        g.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') selectAirportFromMap(apt.id); };
         g.onmouseenter = (e) => showMapTooltip(e, apt, delayedCount, aptFlights.length);
         g.onmouseleave = hideMapTooltip;
 
@@ -1484,7 +1489,7 @@
           const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
           pulse.setAttribute('cx', pt.x);
           pulse.setAttribute('cy', pt.y);
-          pulse.setAttribute('r', '18');
+          pulse.setAttribute('r', '22');
           pulse.setAttribute('fill', 'url(#hub-glow-closed)');
           pulse.setAttribute('class', 'pulse-ring-red');
           g.appendChild(pulse);
@@ -1493,7 +1498,7 @@
         const node = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         node.setAttribute('cx', pt.x);
         node.setAttribute('cy', pt.y);
-        const radius = apt.tier === 'mega_hub' ? 8 : (apt.tier === 'regional_hub' ? 6 : 4.5);
+        const radius = apt.tier === 'mega_hub' ? 8.5 : (apt.tier === 'regional_hub' ? 6.5 : 5);
         node.setAttribute('r', radius);
 
         let nodeFill = '#38bdf8';
@@ -1502,17 +1507,17 @@
         else if (isSpareBase) nodeFill = '#06b6d4';
 
         node.setAttribute('fill', nodeFill);
-        node.setAttribute('stroke', '#090e1a');
-        node.setAttribute('stroke-width', '2');
+        node.setAttribute('stroke', '#060910');
+        node.setAttribute('stroke-width', '2.5');
         g.appendChild(node);
 
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('x', pt.x + 10);
-        text.setAttribute('y', pt.y + 4);
-        text.setAttribute('fill', isClosed ? '#fda4af' : (delayedCount > 0 ? '#fde68a' : '#94a3b8'));
-        text.setAttribute('font-size', '11');
+        text.setAttribute('x', pt.x + 11);
+        text.setAttribute('y', pt.y + 4.5);
+        text.setAttribute('fill', isClosed ? '#fda4af' : (delayedCount > 0 ? '#fde68a' : '#cbd5e1'));
+        text.setAttribute('font-size', '11.5');
         text.setAttribute('font-family', 'JetBrains Mono');
-        text.setAttribute('font-weight', isClosed || apt.tier === 'mega_hub' ? 'bold' : 'normal');
+        text.setAttribute('font-weight', isClosed || apt.tier === 'mega_hub' ? 'bold' : '600');
         text.textContent = apt.id;
         g.appendChild(text);
 
@@ -1535,7 +1540,7 @@
         </div>
         ${apt.id === 'BLR' ? '<div class="text-[10px] text-cyan-400 mt-1 font-bold">★ Spare VT-DS17 Stationed Here</div>' : ''}
         ${apt.id === 'DEL' ? '<div class="text-[10px] text-cyan-400 mt-1 font-bold">★ Spare VT-DS18 Stationed Here</div>' : ''}
-        <div class="text-[10px] text-slate-500 mt-1 italic">Click to target disruption</div>
+        <div class="text-[10px] text-slate-400 mt-1 italic">Click to target disruption</div>
       `;
       tip.style.left = `${e.clientX + 15}px`;
       tip.style.top = `${e.clientY - 40}px`;
@@ -1583,7 +1588,7 @@
             const widthPct = (blockM / dayDuration) * 100;
 
             const block = document.createElement('div');
-            block.className = "absolute top-0.5 bottom-0.5 rounded text-[10px] font-mono px-1 flex items-center justify-center bg-slate-800/80 text-slate-500 border border-slate-700 line-through cursor-pointer";
+            block.className = "absolute top-0.5 bottom-0.5 rounded text-[10px] font-mono px-1 flex items-center justify-center bg-slate-800/80 text-slate-400 border border-slate-700 line-through cursor-pointer";
             block.style.left = `${leftPct}%`;
             block.style.width = `${Math.max(widthPct, 2)}%`;
             block.title = `${f.flight_id} CANCELLED (${f.origin}->${f.destination})`;
@@ -1635,14 +1640,17 @@
       document.getElementById('tab-btn-flights').className = tab === 'flights' 
         ? "text-xs font-semibold px-3 py-1.5 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 transition"
         : "text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition";
+      document.getElementById('tab-btn-flights').setAttribute('aria-selected', tab === 'flights');
 
       document.getElementById('tab-btn-connections').className = tab === 'connections'
         ? "text-xs font-semibold px-3 py-1.5 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 transition"
         : "text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition";
+      document.getElementById('tab-btn-connections').setAttribute('aria-selected', tab === 'connections');
 
       document.getElementById('tab-btn-crews').className = tab === 'crews'
         ? "text-xs font-semibold px-3 py-1.5 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 transition"
         : "text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition";
+      document.getElementById('tab-btn-crews').setAttribute('aria-selected', tab === 'crews');
 
       renderActiveTab();
     }
@@ -1683,7 +1691,7 @@
 
           let statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">On Time</span>`;
           if (f.status === 'CANCELLED') {
-            statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] bg-slate-700 text-slate-300">Cancelled</span>`;
+            statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] bg-slate-700 text-slate-200">Cancelled</span>`;
           } else if (f.status === 'SEVERELY_DELAYED') {
             statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] bg-rose-500/10 text-rose-400 border border-rose-500/20 font-bold">Severe (+${f.dep_delay}m)</span>`;
           } else if (f.status === 'DELAYED') {
@@ -1812,14 +1820,14 @@
 
       let html = `
         <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono">
-          <div><span class="text-slate-500">Aircraft Tail:</span> <strong class="text-white">${f.tail_id}</strong></div>
-          <div><span class="text-slate-500">Leg Sequence:</span> <strong class="text-white">Leg ${f.leg_order}</strong></div>
-          <div><span class="text-slate-500">Scheduled:</span> <strong class="text-white">${f.sched_dep} - ${f.sched_arr}</strong></div>
-          <div><span class="text-slate-500">Actual:</span> <strong class="${f.dep_delay > 0 ? 'text-amber-400' : 'text-white'}">${f.actual_dep || 'N/A'} - ${f.actual_arr || 'N/A'}</strong></div>
-          <div><span class="text-slate-500">Departure Delay:</span> <strong class="${f.dep_delay > 0 ? 'text-rose-400' : 'text-emerald-400'}">+${f.dep_delay} mins</strong></div>
-          <div><span class="text-slate-500">Passengers:</span> <strong class="text-white">${f.pax} pax</strong></div>
-          <div><span class="text-slate-500">Status:</span> <strong class="text-white">${f.status}</strong></div>
-          <div><span class="text-slate-500">Aircraft Type:</span> <strong class="text-white">A320 (180 seats)</strong></div>
+          <div><span class="text-slate-400">Aircraft Tail:</span> <strong class="text-white">${f.tail_id}</strong></div>
+          <div><span class="text-slate-400">Leg Sequence:</span> <strong class="text-white">Leg ${f.leg_order}</strong></div>
+          <div><span class="text-slate-400">Scheduled:</span> <strong class="text-white">${f.sched_dep} - ${f.sched_arr}</strong></div>
+          <div><span class="text-slate-400">Actual:</span> <strong class="${f.dep_delay > 0 ? 'text-amber-400' : 'text-white'}">${f.actual_dep || 'N/A'} - ${f.actual_arr || 'N/A'}</strong></div>
+          <div><span class="text-slate-400">Departure Delay:</span> <strong class="${f.dep_delay > 0 ? 'text-rose-400' : 'text-emerald-400'}">+${f.dep_delay} mins</strong></div>
+          <div><span class="text-slate-400">Passengers:</span> <strong class="text-white">${f.pax} pax</strong></div>
+          <div><span class="text-slate-400">Status:</span> <strong class="text-white">${f.status}</strong></div>
+          <div><span class="text-slate-400">Aircraft Type:</span> <strong class="text-white">A320 (180 seats)</strong></div>
         </div>
 
         <div class="flex flex-col gap-2 mt-2">
@@ -1926,7 +1934,7 @@
       document.getElementById('recovery-diff-banner').classList.add('hidden');
       document.getElementById('ai-briefing-box').innerHTML = `<p class="text-slate-400 italic">Select an airport closure scenario above to simulate the cascade and unlock AI recovery actions.</p>`;
       document.getElementById('recovery-cards-container').innerHTML = `
-        <div class="p-4 border border-dashed border-slate-800 rounded-lg text-center text-xs text-slate-500">
+        <div class="p-4 border border-dashed border-slate-800 rounded-lg text-center text-xs text-slate-400">
           No active disruption. All flights operating smoothly.
         </div>
       `;
@@ -1943,10 +1951,10 @@
       briefingBox.innerHTML = `
         <div class="text-sky-400 font-bold mb-1 flex items-center justify-between">
           <span>OPERATIONAL SITREP</span>
-          <span class="text-[10px] text-slate-500">${aiData.model}</span>
+          <span class="text-[10px] text-slate-400">${aiData.model}</span>
         </div>
         <p class="mb-1 text-slate-200 font-medium">${aiData.incident_summary}</p>
-        <p class="text-slate-400 border-t border-slate-800 pt-1 mt-1"><strong>Root Cause Diagnosis:</strong> ${aiData.cascade_root_cause}</p>
+        <p class="text-slate-300 border-t border-slate-800 pt-1 mt-1"><strong>Root Cause Diagnosis:</strong> ${aiData.cascade_root_cause}</p>
       `;
 
       const container = document.getElementById('recovery-cards-container');
@@ -1982,7 +1990,7 @@
               </div>
               <h4 class="font-bold text-xs text-white mt-1">${opt.title}</h4>
             </div>
-            <button onclick="applyRecoveryPlan('${opt.id}')" class="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 transition shadow font-mono">
+            <button onclick="applyRecoveryPlan('${opt.id}')" aria-label="Apply recovery plan: ${opt.title}" class="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 transition shadow font-mono focus:ring-2 focus:ring-sky-300">
               Apply Plan
             </button>
           </div>
@@ -1991,19 +1999,19 @@
 
           <div class="grid grid-cols-4 gap-1.5 bg-black/40 p-2 rounded border border-slate-800/80 text-center text-[10px] font-mono">
             <div>
-              <span class="text-slate-500 block">Delay Cut</span>
+              <span class="text-slate-400 block">Delay Cut</span>
               <strong class="text-emerald-400">-${opt.delta.delay_minutes_saved}m</strong>
             </div>
             <div>
-              <span class="text-slate-500 block">Pax Saved</span>
+              <span class="text-slate-400 block">Pax Saved</span>
               <strong class="text-emerald-400">+${opt.delta.stranded_pax_saved}</strong>
             </div>
             <div>
-              <span class="text-slate-500 block">Crews Saved</span>
+              <span class="text-slate-400 block">Crews Saved</span>
               <strong class="${opt.delta.crew_violations_saved > 0 ? 'text-emerald-400' : 'text-slate-400'}">${opt.delta.crew_violations_saved}</strong>
             </div>
             <div>
-              <span class="text-slate-500 block">Net Saved</span>
+              <span class="text-slate-400 block">Net Saved</span>
               <strong class="text-emerald-400">₹${(opt.delta.cost_saved_inr / 1000).toFixed(0)}k</strong>
             </div>
           </div>
